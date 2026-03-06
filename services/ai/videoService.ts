@@ -15,6 +15,7 @@ import {
   resizeImageToSize,
   getSoraVideoSize,
 } from './apiCore';
+import { toFriendlyModerationMessage } from '../errorMessageService';
 
 const VOLCENGINE_TASK_DEFAULT_ENDPOINT = '/api/v3/contents/generations/tasks';
 const VOLCENGINE_DEFAULT_MODEL = 'doubao-seedance-1-5-pro-251215';
@@ -25,6 +26,9 @@ const SORA_COMPATIBLE_VIDEO_MODELS = new Set([
 
 const isSoraCompatibleVideoModel = (modelName: string): boolean =>
   SORA_COMPATIBLE_VIDEO_MODELS.has((modelName || '').trim().toLowerCase());
+
+const toFriendlyVideoErrorMessage = (message: string): string =>
+  toFriendlyModerationMessage(message) || message;
 
 const mapVolcengineRatio = (
   aspectRatio: AspectRatio,
@@ -145,7 +149,7 @@ const generateVideoAsync = async (
       const errorText = await createResponse.text();
       if (errorText) errorMessage = errorText;
     }
-    throw new Error(errorMessage);
+    throw new Error(toFriendlyVideoErrorMessage(errorMessage));
   }
 
   const createData = await createResponse.json();
@@ -203,7 +207,7 @@ const generateVideoAsync = async (
         statusData?.error?.code ||
         statusData?.message ||
         '未知错误';
-      throw new Error(`视频生成失败: ${errorMessage}`);
+      throw new Error(toFriendlyVideoErrorMessage(errorMessage));
     }
   }
 
@@ -467,7 +471,7 @@ const generateVideoVolcengineTask = async (
         statusData?.message ||
         statusData?.msg ||
         '未知错误';
-      throw new Error(`视频生成失败: ${errorMessage}`);
+      throw new Error(toFriendlyVideoErrorMessage(errorMessage));
     }
   }
 
@@ -599,7 +603,7 @@ export const generateVideo = async (
           const errorText = await res.text();
           if (errorText) errorMessage = errorText;
         }
-        throw new Error(errorMessage);
+        throw new Error(toFriendlyVideoErrorMessage(errorMessage));
       }
 
       return res;

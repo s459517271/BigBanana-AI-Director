@@ -48,6 +48,7 @@ import { assessShotQuality, getProjectAverageQualityScore } from '../../services
 import { assessShotQualityWithLLM } from '../../services/qualityAssessmentV2Service';
 import { updatePromptWithVersion } from '../../services/promptVersionService';
 import { resolvePromptTemplateConfig } from '../../services/promptTemplateService';
+import { toFriendlyModerationMessage } from '../../services/errorMessageService';
 
 interface Props {
   project: ProjectState;
@@ -147,8 +148,11 @@ const StageDirector: React.FC<Props> = ({ project, updateProject, onApiKeyError,
 
     const status = error?.status;
     const rawMessage = typeof error?.message === 'string' ? error.message : '';
+    const moderationMessage = toFriendlyModerationMessage(rawMessage, {
+      includeUnknownReasonCode: import.meta.env.DEV,
+    });
 
-    let normalizedMessage = rawMessage;
+    let normalizedMessage = moderationMessage || rawMessage;
     if (!normalizedMessage) {
       if (status === 400) {
         normalizedMessage = '提示词可能被风控拦截，请修改提示词后重试。';
