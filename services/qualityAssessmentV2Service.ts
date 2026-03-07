@@ -6,6 +6,7 @@ import {
   getActiveChatModel,
 } from './aiService';
 import { assessShotQuality } from './qualityAssessmentService';
+import { findSceneByIdCompat } from './storyboardIdUtils';
 
 const QUALITY_SCHEMA_VERSION = 2;
 
@@ -86,7 +87,7 @@ const safeJsonParse = (raw: string): LLMRawResponse => {
 };
 
 const buildShotAssessmentContext = (shot: Shot, scriptData?: ScriptData | null) => {
-  const scene = scriptData?.scenes.find((entry) => String(entry.id) === String(shot.sceneId));
+  const scene = findSceneByIdCompat(scriptData?.scenes, shot.sceneId);
   const startFrame = shot.keyframes?.find((frame) => frame.type === 'start');
   const endFrame = shot.keyframes?.find((frame) => frame.type === 'end');
   const characters = (shot.characters || []).map((charId) => {

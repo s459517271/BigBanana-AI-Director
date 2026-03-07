@@ -19,6 +19,7 @@ import {
   resolvePromptTemplateConfig,
   withTemplateFallback,
 } from '../../services/promptTemplateService';
+import { findSceneByIdCompat } from '../../services/storyboardIdUtils';
 
 const KEYFRAME_META_SPLITTER = '\n\n---PROMPT_META_START---';
 
@@ -181,7 +182,7 @@ export const getRefImagesForShot = (shot: Shot, scriptData: ProjectState['script
   }
 
   // 1. 场景参考图（环境/氛围） - 优先级最高
-  const scene = scriptData.scenes.find(s => String(s.id) === String(shot.sceneId));
+  const scene = findSceneByIdCompat(scriptData.scenes, shot.sceneId);
   if (scene?.referenceImage) {
     primaryImages.push(scene.referenceImage);
   }

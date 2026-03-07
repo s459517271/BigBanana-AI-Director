@@ -38,6 +38,7 @@ import EditModal from './EditModal';
 import ShotCard from './ShotCard';
 import ShotWorkbench from './ShotWorkbench';
 import ImagePreviewModal from './ImagePreviewModal';
+import { findSceneByIdCompat } from '../../services/storyboardIdUtils';
 import NineGridPreview from './NineGridPreview';
 import { useAlert } from '../GlobalAlert';
 import { AspectRatioSelector } from '../AspectRatioSelector';
@@ -186,7 +187,7 @@ const StageDirector: React.FC<Props> = ({ project, updateProject, onApiKeyError,
       return parts.join(', ');
     }
 
-    const scene = scriptData.scenes.find(s => String(s.id) === String(shot.sceneId));
+    const scene = findSceneByIdCompat(scriptData.scenes, shot.sceneId);
     pushPrompt(
       shotHasCharacters
         ? stripHumanExclusionTerms(scene?.negativePrompt)
@@ -1238,7 +1239,7 @@ const StageDirector: React.FC<Props> = ({ project, updateProject, onApiKeyError,
   /** 执行AI拆分镜头的实际逻辑 */
   const executeSplitShot = async (shot: Shot) => {
     // 1. 获取场景信息
-    const scene = project.scriptData?.scenes.find(s => String(s.id) === String(shot.sceneId));
+    const scene = findSceneByIdCompat(project.scriptData?.scenes, shot.sceneId);
     if (!scene) {
       showAlert('找不到场景信息', { type: 'warning' });
       return;
@@ -1307,7 +1308,7 @@ const StageDirector: React.FC<Props> = ({ project, updateProject, onApiKeyError,
     const layout = resolveStoryboardGridLayout(panelCount ?? shot.nineGrid?.layout?.panelCount);
     
     // 1. 获取场景信息
-    const scene = project.scriptData?.scenes.find(s => String(s.id) === String(shot.sceneId));
+    const scene = findSceneByIdCompat(project.scriptData?.scenes, shot.sceneId);
     if (!scene) {
       showAlert('找不到场景信息', { type: 'warning' });
       return;

@@ -1,6 +1,7 @@
 import { ProjectState, AssetLibraryItem, SeriesProject, Series, Episode } from '../types';
 import { runV2ToV3Migration, runEpisodeTitleFixMigration } from './migrationService';
 import { materializeProjectVideosForExport, migrateProjectVideosToOPFS } from './videoStorageService';
+import { reconcileShotSceneIds } from './storyboardIdUtils';
 import { sanitizePromptTemplateOverrides } from './promptTemplateService';
 import { normalizeChatModelId } from './modelIdUtils';
 
@@ -116,6 +117,7 @@ const normalizeEpisode = (ep: Episode): Episode => {
   return {
     ...ep,
     scriptData,
+    shots: reconcileShotSceneIds(ep.shots || [], scriptData?.scenes || []),
     renderLogs: ep.renderLogs || [],
     characterRefs: mergeByKey(ep.characterRefs, inferredCharacterRefs, r => r.characterId),
     sceneRefs: mergeByKey(ep.sceneRefs, inferredSceneRefs, r => r.sceneId),

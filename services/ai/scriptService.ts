@@ -37,6 +37,7 @@ import {
   resolvePromptTemplateConfig,
   withTemplateFallback,
 } from '../promptTemplateService';
+import { normalizeSceneId } from '../storyboardIdUtils';
 
 // Re-export 日志回调函数（保持外部 API 兼容）
 export { setScriptLogCallback, clearScriptLogCallback, logScriptProgress } from './apiCore';
@@ -1606,7 +1607,7 @@ export const generateShotList = async (
   if (shouldReuseUnchangedScenes && previousScriptData && resolvePreviousSceneActionText) {
     const previousShotsByScene = new Map<string, Shot[]>();
     for (const shot of previousShots) {
-      const key = String(shot.sceneId || '');
+      const key = normalizeSceneId(String(shot.sceneId || ''));
       if (!previousShotsByScene.has(key)) {
         previousShotsByScene.set(key, []);
       }
@@ -1615,7 +1616,7 @@ export const generateShotList = async (
 
     for (let index = 0; index < previousScriptData.scenes.length; index += 1) {
       const previousScene = previousScriptData.scenes[index];
-      const sceneShots = previousShotsByScene.get(String(previousScene.id)) || [];
+      const sceneShots = previousShotsByScene.get(normalizeSceneId(String(previousScene.id))) || [];
       if (sceneShots.length === 0) continue;
 
       const previousAction = resolvePreviousSceneActionText(previousScene, index).text;
