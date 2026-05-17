@@ -110,9 +110,9 @@ Traditional Text-to-Video models often struggle with specific camera movements a
 This project deeply integrates [**AntSK API Platform**](https://api.antsk.cn/), delivering exceptional value for creators:
 
 ### 🎯 Full Model Coverage
-* **Text Models**: GPT-5.2, GPT-5.1, Claude 3.5 Sonnet
-* **Vision Models**: Gemini 3 Pro, Nano Banana Pro
-* **Video Models**: Sora-2, Veo-3.1 (with keyframe interpolation)
+* **Text Models**: GPT-5.2, GPT-5.1, Claude 4.6 Sonnet
+* **Vision Models**: Nano Banana Pro, Gpt Image 2
+* **Video Models**: Sora-2, Veo-3.1, Vidu, Seedance 2.0, happyhorse, and more
 * **Unified Access**: Single API for all models, no platform switching
 
 ### 💰 Unbeatable Pricing

@@ -112,9 +112,9 @@
 本プロジェクトは [**AntSK API プラットフォーム**](https://api.antsk.cn/) を深く統合し、クリエイターに最高のコストパフォーマンスを提供します：
 
 ### 🎯 全モデル対応
-* **テキストモデル**: GPT-5.2、GPT-5.1、Claude 3.5 Sonnet
-* **ビジョンモデル**: Gemini 3 Pro、Nano Banana Pro
-* **ビデオモデル**: Sora-2、Veo-3.1（キーフレーム補間対応）
+* **テキストモデル**: GPT-5.2、GPT-5.1、Claude 4.6 Sonnet
+* **ビジョンモデル**: Nano Banana Pro、Gpt Image 2
+* **ビデオモデル**: Sora-2、Veo-3.1、Vidu、Seedance 2.0、happyhorse など
 * **統一アクセス**：単一 API ですべてのモデルを利用可能、プラットフォーム切り替え不要
 
 ### 💰 圧倒的な価格優位性
